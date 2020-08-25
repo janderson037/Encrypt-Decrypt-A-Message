@@ -1,0 +1,80 @@
+echo "# Encrypt-Decrypt-A-Message" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/janderson037/Encrypt-Decrypt-A-Message.git
+git push -u origin master
+
+#this program allows a user to encrypt and decrypt messages the user would like to send to a friend
+#to encrypt a message, enter enc<>(message)<>(a number)
+#the message in the middle is the message the user would like to send to the recipient and the number is the key that the program will use to encrypt and decrypt the message
+#to decrypt a message, enter dec<>(received message)<>
+
+#create string variable for alphabet
+alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
+
+#define function to encrypt message
+def encrypt(encryption, N):
+    #this will be the final message at the end
+    encrypted_message = ""
+    count = 0
+    for x in encryption:
+        if x.isdigit() or x.isalpha():
+            location = int(alphabet.find(x))
+            position = location + N + count
+            position %= 36
+            character = alphabet[position]
+            encrypted_message = encrypted_message + character
+            count += 1
+        else:
+            encrypted_message = encrypted_message + x
+            count += 1
+    print("Your secret message is: ", encrypted_message)
+
+def decrypt(decryption, N):
+    decrypted_message = ""
+    count = 0
+    for x in decryption:
+        if x.isdigit() or x.isalpha():
+            location = int(alphabet.find(x))
+            position = location - N - count
+            position %= 36
+            character = alphabet[position]
+            decrypted_message = decrypted_message + character
+            count += 1
+        else:
+            decrypted_message = decrypted_message + x
+            count += 1
+    print("Your original message is: ", decrypted_message)
+
+while True:
+    message = input("Please enter a message, or q to quit: ")
+  
+    if message == "q":
+        break
+
+        # calling encrypt function
+    elif message.startswith("enc") != -1 or message.startswith("dec") != -1:
+        end = message.rfind("<>")
+        end2 = message.rindex(">")
+        original_message = message[5:end]
+        integer = end2 + 1
+        key = int(message[integer:])
+    
+    
+        if message.startswith("enc"):
+            # print message
+            print("Your original message is: ", original_message)
+            encrypt(original_message, key)
+  
+        # calling decrypt function
+        elif message.startswith("dec"):
+            # print secret message
+            print("Your secret message is: ", original_message)
+            decrypt(original_message, key)
+
+        else: 
+            print("I do not understand.  Please enter a message, or q to quit: ")
+    
+    else:
+        print("I do not understand.  Please enter a message, or q to quit: ")
